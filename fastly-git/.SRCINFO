@@ -1,0 +1,15 @@
+pkgbase = fastly-git
+	pkgdesc = A CLI for interacting with the Fastly platform. (development version)
+  pkgver = 0.7.1.g817b5bd
+  pkgrel = 1
+	url = https://github.com/fastly/cli
+	arch = x86_64
+	license = APACHE
+	makedepends = go>1.13
+	depends = git
+	provides = fastly
+	conflicts = fastly
+	source = fastly::git+https://github.com/fastly/cli.git#branch=master
+	sha256sums = SKIP
+
+pkgname = fastly-git

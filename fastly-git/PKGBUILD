@@ -1,0 +1,58 @@
+# Maintainer: Colton J. McCurdy <mccurdyc22@gmail.com>
+
+_pkgname=fastly
+_pkgnamealt=cli
+pkgname=fastly-git
+pkgver=0.7.1.g817b5bd
+pkgrel=1
+pkgdesc="A CLI for interacting with the Fastly platform. (development version)"
+arch=('x86_64')
+url="https://github.com/fastly/cli"
+license=('APACHE')
+depends=(
+  'git'
+)
+provides=('fastly')
+conflicts=('fastly')
+makedepends=(
+  'go>=1.13'
+)
+optdepends=('rust: compute support')
+
+source=("fastly::git+https://github.com/fastly/cli.git#branch=master")
+sha256sums=('SKIP')
+
+# This function runs right after package extraction, before pkgver() and the build function.
+prepare() {
+  export GOPATH="${srcdir}"
+  export PATH="$PATH:$GOPATH/bin"
+  mkdir -p "${srcdir}/github.com/fastly"
+  mv "${_pkgname}" "${srcdir}/github.com/fastly/${_pkgnamealt}"
+}
+
+# This function runs after the sources are fetched, extracted and prepare() executed.
+# pkgver cannot contain spaces or hyphens (-). Using sed to correct this is common.
+pkgver() {
+  cd "${srcdir}/github.com/fastly/${_pkgnamealt}"
+  git describe --long | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
+}
+
+# This function compiles software and creates a directory called pkg/ to install
+# the software to. This allows makepkg to package files without having to sift
+# through your file system. The first step in the build() function is to change
+# into the directory created by uncompressing the source tarball. makepkg will
+# change the current directory to $srcdir before executing the build() function.
+build() {
+  cd "${srcdir}/github.com/fastly/${_pkgnamealt}"
+  make fastly
+}
+
+# The final step is to put the compiled files in a directory where makepkg can
+# retrieve them to create a package. The pkg directory replicates the hierarchy
+# of the root file system of the software's installation paths. If you have to
+# manually place files under the root of your filesystem, you should install them
+# in the pkg directory under the same directory structure.
+package() {
+  cd "${srcdir}/github.com/fastly/${_pkgnamealt}"
+  install -Dm755 "${_pkgname}" "${pkgdir}/usr/bin/${_pkgname}"
+}

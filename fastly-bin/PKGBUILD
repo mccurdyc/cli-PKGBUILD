@@ -1,0 +1,37 @@
+# Maintainer: Colton J. McCurdy <mccurdyc22@gmail.com>
+
+_pkgname=fastly
+pkgname=fastly-bin
+pkgver=0.7.1
+pkgrel=1
+pkgdesc="A CLI for interacting with the Fastly platform. Pre-compiled."
+arch=('x86_64')
+url="https://github.com/fastly/cli"
+license=('APACHE')
+depends=(
+  'git'
+)
+provides=('fastly')
+conflicts=('fastly')
+makedepends=(
+  'go>=1.13'
+)
+optdepends=('rust: compute support')
+
+source_x86_64=("${_pkgname}_v${pkgver}_amd64.tar.gz::https://github.com/fastly/cli/releases/download/v${pkgver}/${_pkgname}_v${pkgver}_linux-amd64.tar.gz")
+sha256sums_x86_64=('07d6c93c4d7e8522ad55dd6fcf3a62a3d9349a124fc1ba353b5f5e01e7756823')
+
+# The final step is to put the compiled files in a directory where makepkg can
+# retrieve them to create a package. The pkg directory replicates the hierarchy
+# of the root file system of the software's installation paths. If you have to
+# manually place files under the root of your filesystem, you should install them
+# in the pkg directory under the same directory structure.
+package() {
+  _carch=""
+  if [ "${CARCH}" == "x86_64" ]; then
+    _carch="amd64"
+  fi
+
+  _output="${srcdir}/${pkgname}_v${pkgver}_${_carch}"
+  install -Dm755 "${_pkgname}" "${pkgdir}/usr/bin/${_pkgname}"
+}
