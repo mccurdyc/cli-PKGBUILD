@@ -2,12 +2,12 @@
 
 # Usage Function
 function usage() {
-  cat <<_EOT_
+  cat <<EOT
 Usage:
   $0 version ...
 Description:
   version tells what pkgver to update to
-_EOT_
+EOT
   exit 1
 }
 
@@ -21,19 +21,26 @@ set -e
 echo "Processing fastly-bin"
 (
   cd fastly-bin || exit
+  # git checkout .
   git clean -fdx
+  # git pull
   sed -i "s/pkgver=.*/pkgver=$newV/g" PKGBUILD
   updpkgsums PKGBUILD
   makepkg
   makepkg --printsrcinfo >.SRCINFO
+  #git commit -a -S -m "$newV"
+  #git push
 )
 
 echo "Processing fastly-git"
 (
   cd fastly-git || exit
-  git clean -fdx
+  # git checkout .
+  sudo git clean -fdx
+  # git pull
   makepkg
   makepkg --printsrcinfo >.SRCINFO
+  #git push
 )
 
 # git commit -a -S -m "$newV"

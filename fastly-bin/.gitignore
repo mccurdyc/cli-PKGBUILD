@@ -1,5 +1,7 @@
 *.tar.xz
+*.tar.zst
 *.tar.lz
 *.tar.gz
 /pkg
 /src
+/fastly

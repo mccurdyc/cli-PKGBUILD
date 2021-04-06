@@ -2,7 +2,7 @@
 
 _pkgname=fastly
 pkgname=fastly-bin
-pkgver=0.7.1
+pkgver=0.26.3
 pkgrel=1
 pkgdesc="A CLI for interacting with the Fastly platform. Pre-compiled."
 arch=('x86_64')
@@ -19,7 +19,7 @@ makedepends=(
 optdepends=('rust: compute support')
 
 source_x86_64=("${_pkgname}_v${pkgver}_amd64.tar.gz::https://github.com/fastly/cli/releases/download/v${pkgver}/${_pkgname}_v${pkgver}_linux-amd64.tar.gz")
-sha256sums_x86_64=('07d6c93c4d7e8522ad55dd6fcf3a62a3d9349a124fc1ba353b5f5e01e7756823')
+sha256sums_x86_64=('dd19bdf2c8c67afa59866322a2f4eb773b17b909c34be6edd215b44c549fd6ae')
 
 # The final step is to put the compiled files in a directory where makepkg can
 # retrieve them to create a package. The pkg directory replicates the hierarchy
